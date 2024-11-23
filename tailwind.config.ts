@@ -9,9 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        green: "#276262",
+        white: "#fbfffe",
+        black: "#242424",
+        "light-green": "#10ac84",
+        red: "#d80032",
+        yellow: "#f0a202",
+        blue: "#2980b9",
       },
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+      },
+    },
+    fontFamily: {
+      sans: ["Poppins", "sans-serif"],
     },
   },
   plugins: [],

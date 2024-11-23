@@ -17,7 +17,7 @@ export default function RouteProtector({
 
   useEffect(() => {
     const checkTokenExpiry = async (): Promise<boolean> => {
-      const token = localStorage.getItem("kiti-token");
+      const token = localStorage.getItem("ead-token");
       if (!token) {
         return false;
       }
@@ -41,7 +41,7 @@ export default function RouteProtector({
     const checkAccess = async () => {
       if (
         !router.pathname.startsWith("/admin") ||
-        router.pathname.startsWith("/admin/auth")
+        router.pathname.startsWith("/auth")
       ) {
         console.log("Not an admin route. Skipping access check.");
         setLoading(false);
@@ -52,17 +52,17 @@ export default function RouteProtector({
 
           if (!tokenValid) {
             console.log("Token is invalid. Redirecting to login");
-            router.push(`/admin/auth/signin`);
+            router.push(`/auth/signin`);
             return;
           }
 
           console.log("Token is valid. Fetching user details.");
           const userDetails = await getUserDetails(
-            localStorage.getItem("kiti-token")
+            localStorage.getItem("ead-token")
           );
           if (!userDetails) {
             console.log("User not found. Redirecting to login");
-            router.push(`/admin/auth/signin`);
+            router.push(`/auth/signin`);
             return;
           }
 
@@ -77,7 +77,7 @@ export default function RouteProtector({
 
           if (!hasAccess && router.pathname !== "/admin") {
             console.log("Unauthorized access! Redirecting to login.");
-            router.push(`/admin/auth/signin`);
+            router.push(`/auth/signin`);
           } else {
             console.log("User has access.");
             setLoading(false);
@@ -92,7 +92,7 @@ export default function RouteProtector({
 
           if (!hasAccess && router.pathname !== "/admin") {
             console.log("Unauthorized access! Redirecting to login.");
-            router.push(`/admin/auth/signin`);
+            router.push(`/auth/signin`);
           } else {
             console.log("User has access.");
             setLoading(false);
