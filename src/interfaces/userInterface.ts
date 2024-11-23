@@ -1,5 +1,10 @@
+export enum UserType {
+  USER = "USER",
+  ADMIN = "ADMIN",
+}
+
 export interface CreateUser {
-  type: string;
+  type: UserType;
   name: string;
   email: string;
   phone: string;
@@ -9,7 +14,7 @@ export interface CreateUser {
 
 export interface User {
   id: number;
-  type: string;
+  type: UserType;
   name: string;
   email: string;
   phone: string;
@@ -21,7 +26,7 @@ export interface User {
 
 export interface UpdateUser {
   id: number;
-  type: string;
+  type: UserType;
   name: string;
   email: string;
   phone: string;
