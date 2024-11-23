@@ -1,7 +1,9 @@
+import VisitorLayout from "@/components/VisitorLayout";
+
 export default function Home() {
   return (
-    <div>
-      <h1 className=" text-green">Home</h1>
-    </div>
+    <VisitorLayout>
+      <h1 className="text-red">Sankha</h1>
+    </VisitorLayout>
   );
 }
