@@ -53,7 +53,7 @@ const SidebarFeature: React.FC<SidebarFeatureProps> = ({
               )}
             <span className="text-white text-sm">{feature.name}</span>
           </div>
-          <span className="text-gray-500">
+          <span className="text-gray-200">
             {isOpen ? <FaAngleUp /> : <FaAngleDown />}
           </span>
         </div>

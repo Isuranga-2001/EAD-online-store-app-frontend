@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import SidebarLayout from "@/components/SidebarLayout";
 import TextBox from "@/components/TextBox";
 import Dropdown from "@/components/Dropdown";
@@ -8,6 +9,9 @@ import { getAllProducts, searchProducts } from "@/services/productService";
 import { getAllProductTypes } from "@/services/productTypeService";
 import { Product } from "@/interfaces/productInterface";
 import { ProductType } from "@/interfaces/productTypeInterface";
+import Spinner from "@/components/Spinner";
+import Toast from "@/components/Toast";
+import { toast } from "react-toastify";
 
 interface GetAllProductsResponse {
   total: number;
@@ -15,10 +19,13 @@ interface GetAllProductsResponse {
 }
 
 export default function AdminProductsPage() {
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [productTypes, setProductTypes] = useState<ProductType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProductType, setSelectedProductType] = useState("");
@@ -41,14 +48,19 @@ export default function AdminProductsPage() {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const response: GetAllProductsResponse = await getAllProducts(
         currentPage,
         pageSize
       );
+      console.log(response);
       setProducts(response.products);
       setTotalPages(Math.ceil(response.total / 10));
     } catch (error) {
       console.error(error);
+      toast.error("Failed to fetch products");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,22 +75,33 @@ export default function AdminProductsPage() {
       params.page = 1;
       params.page_size = pageSize;
       console.log(params);
+      setLoading(true);
       const response: GetAllProductsResponse = await searchProducts(params);
       console.log(response);
       setProducts(response.products);
       setTotalPages(Math.ceil(response.total / 10));
     } catch (error) {
       console.error(error);
+      toast.error("Failed to search products");
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchProductTypes = async () => {
     try {
+      setLoading(true);
       const response = await getAllProductTypes();
       setProductTypes(response);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleViewEditClick = (productID: number) => {
+    router.push(`/admin/products/${productID}`);
   };
 
   const columns: TableColumn<Product>[] = [
@@ -86,6 +109,13 @@ export default function AdminProductsPage() {
     { header: "Name", accessor: "name" },
     { header: "Price", accessor: "price" },
     { header: "Stock", accessor: "stock" },
+    {
+      header: "Actions",
+      accessor: "ID",
+      isButton: true,
+      buttonCaption: "View/Edit",
+      onClick: (row: Product) => handleViewEditClick(row.ID),
+    },
   ];
 
   return (
@@ -152,6 +182,8 @@ export default function AdminProductsPage() {
           onPageChange={setCurrentPage}
         />
       </div>
+      <Spinner isVisible={loading} />
+      <Toast />
     </SidebarLayout>
   );
 }
