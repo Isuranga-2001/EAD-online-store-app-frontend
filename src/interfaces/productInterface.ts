@@ -1,18 +1,5 @@
-export interface ProductType {
-  id: number;
-  name: string;
-  products: Product[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ProductImage {
-  id: number;
-  url: string;
-  productId: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { ProductType } from "./productTypeInterface";
+import { ProductImage, CreateProductImage } from "./productImageInterface";
 
 export interface Product {
   id: number;
@@ -25,4 +12,23 @@ export interface Product {
   images: ProductImage[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CreateProduct {
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  productTypeId: number;
+  images: CreateProductImage[];
+}
+
+export interface UpdateProduct {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  productTypeId: number;
+  images: CreateProductImage[];
 }
