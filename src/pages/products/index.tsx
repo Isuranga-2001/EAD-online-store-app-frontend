@@ -34,16 +34,17 @@ const ProductsPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [filtersState, setFiltersState] = useState({
-        min_price: undefined,
-        max_price: undefined,
-        in_stock: undefined,
-        product_type_id: undefined,
+        min_price: undefined as number | undefined,
+        max_price: undefined as number | undefined,
+        in_stock: undefined as boolean | undefined,
+        product_type_id: undefined as number | undefined,
         page: 1,
         page_size: 10,
     });
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setLoading(true);
             try {
                 const response = await searchProducts(filtersState);
                 setProducts(response.products);
@@ -57,11 +58,34 @@ const ProductsPage = () => {
         fetchProducts();
     }, [filtersState]);
 
-    const handleFilterChange = (filterId: keyof typeof filtersState, optionValue: any) => {
-        setFiltersState((prevState) => ({
-            ...prevState,
-            [filterId]: optionValue,
-        }));
+    const handleFilterChange = (filterId: keyof typeof filtersState | 'price', optionValue: any) => {
+        if (filterId === 'price') {
+            let min: number | undefined;
+            let max: number | undefined;
+            if (optionValue === '0-50') {
+                min = 0;
+                max = 50;
+            } else if (optionValue === '50-100') {
+                min = 50;
+                max = 100;
+            } else if (optionValue === '100-200') {
+                min = 100;
+                max = 200;
+            } else if (optionValue === '200+') {
+                min = 200;
+                max = undefined;
+            }
+            setFiltersState((prevState) => ({
+                ...prevState,
+                min_price: min,
+                max_price: max,
+            }));
+        } else {
+            setFiltersState((prevState) => ({
+                ...prevState,
+                [filterId]: optionValue,
+            }));
+        }
     };
 
     if (loading) {
@@ -130,7 +154,7 @@ const ProductsPage = () => {
                                                             </Disclosure.Button>
                                                         </h3>
                                                         <Disclosure.Panel className="pt-6">
-                                                            <div className="space-y-6">
+                                                            <div className="space-y-4">
                                                                 {section.options.map((option, optionIdx) => (
                                                                     <div key={option.value} className="flex items-center">
                                                                         <input
@@ -140,7 +164,7 @@ const ProductsPage = () => {
                                                                             type="checkbox"
                                                                             defaultChecked={option.checked}
                                                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                                            onChange={() => handleFilterChange(section.id as keyof typeof filtersState, option.value)}
+                                                                            onChange={() => handleFilterChange(section.id as keyof typeof filtersState | 'price', option.value)}
                                                                         />
                                                                         <label
                                                                             htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
@@ -213,7 +237,7 @@ const ProductsPage = () => {
                                                                     type="checkbox"
                                                                     defaultChecked={option.checked}
                                                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                                    onChange={() => handleFilterChange(section.id as keyof typeof filtersState, option.value)}
+                                                                    onChange={() => handleFilterChange(section.id as keyof typeof filtersState | 'price', option.value)}
                                                                 />
                                                                 <label
                                                                     htmlFor={`filter-${section.id}-${optionIdx}`}
@@ -230,7 +254,6 @@ const ProductsPage = () => {
                                     </Disclosure>
                                 ))}
                             </form>
-
 
                             <div className="lg:col-span-3">
                                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
