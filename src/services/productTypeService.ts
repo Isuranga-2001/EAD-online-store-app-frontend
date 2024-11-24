@@ -11,7 +11,7 @@ export const createProductType = async (
 ): Promise<ProductType> => {
   try {
     const response = await axiosInstance.post(
-      `${BASE_URL}/products/types`,
+      `${BASE_URL}/products/types/`,
       productTypeData
     );
     return response.data;
@@ -23,7 +23,7 @@ export const createProductType = async (
 
 export const getAllProductTypes = async (): Promise<ProductType[]> => {
   try {
-    const response = await axiosInstance.get(`${BASE_URL}/products/types`);
+    const response = await axiosInstance.get(`${BASE_URL}/products/types/`);
     return response.data;
   } catch (error) {
     console.error(error);

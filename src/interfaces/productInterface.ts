@@ -2,16 +2,17 @@ import { ProductType } from "./productTypeInterface";
 import { ProductImage, CreateProductImage } from "./productImageInterface";
 
 export interface Product {
-  id: number;
+  ID: number;
   name: string;
   description: string;
   price: number;
   stock: number;
-  productTypeId: number;
-  productType: ProductType;
+  product_type_id: number;
+  product_type: ProductType;
   images: ProductImage[];
-  createdAt: string;
-  updatedAt: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
 }
 
 export interface CreateProduct {
@@ -19,16 +20,15 @@ export interface CreateProduct {
   description: string;
   price: number;
   stock: number;
-  productTypeId: number;
+  product_type_id: number;
   images: CreateProductImage[];
 }
 
 export interface UpdateProduct {
-  id: number;
   name: string;
   description: string;
   price: number;
   stock: number;
-  productTypeId: number;
+  product_type_id: number;
   images: CreateProductImage[];
 }
