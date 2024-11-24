@@ -141,7 +141,7 @@ const Signin: React.FC = () => {
           <div className="flex flex-col items-center justify-center mt-4">
             <Button caption="SIGN IN" onClick={handleSignIn} />
             <Link href="/auth/forgotpassword">
-              <div className="mb-4 mt-2 text-black text-sm hover:text-light-blue duration-300 transition-all ease-in-out cursor-pointer">
+              <div className="mb-4 mt-2 text-black text-sm hover:text-light-green duration-300 transition-all ease-in-out cursor-pointer">
                 Forgot Password?
               </div>
             </Link>

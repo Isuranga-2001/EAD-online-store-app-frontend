@@ -13,7 +13,7 @@ export default function RouteProtector({
 }) {
   const router = useRouter();
   const { user, setUser } = useUser();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkTokenExpiry = async (): Promise<boolean> => {
@@ -101,7 +101,7 @@ export default function RouteProtector({
       }
     };
 
-    checkAccess();
+    //checkAccess();
   }, [router.pathname, user]);
 
   if (loading) {

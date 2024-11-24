@@ -146,7 +146,7 @@ const OTPPage: React.FC = () => {
         <h3 className="text-md text-center text-black opacity-90 font-semibold">
           OTP
         </h3>
-        <div className="mb-4 text-light-blue text-xs">
+        <div className="mb-4 text-light-green text-xs">
           Check your email for OTP
         </div>
         <div className="flex space-x-2">
@@ -164,12 +164,12 @@ const OTPPage: React.FC = () => {
         </div>
         <div className="w-full flex justify-center items-center space-x-8">
           <div
-            className="mb-4 mt-2 text-black text-sm hover:text-light-blue duration-300 transition-all ease-in-out cursor-pointer"
+            className="mb-4 mt-2 text-black text-sm hover:text-light-green duration-300 transition-all ease-in-out cursor-pointer"
             onClick={handleClearOtp}
           >
             Clear OTP
           </div>
-          <div className="mb-4 mt-2 text-black text-sm hover:text-light-blue duration-300 transition-all ease-in-out cursor-pointer">
+          <div className="mb-4 mt-2 text-black text-sm hover:text-light-green duration-300 transition-all ease-in-out cursor-pointer">
             Resend OTP
           </div>
         </div>
