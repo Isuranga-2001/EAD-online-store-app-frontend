@@ -134,6 +134,7 @@ const ProductsPage = () => {
                 [filterId]: optionValue,
             }));
         }
+
         // Ensure the section remains open when an item is selected
         setOpenSections((prevState) => ({
             ...prevState,
@@ -351,7 +352,7 @@ const ProductsPage = () => {
                                             <a key={product.ID} href="#" className="group">
                                                 <img
                                                     alt={product.name}
-                                                    src={product.images && product.images.length > 0 ? product.images[0].url : '/fallback-image.jpg'}
+                                                    src={product.images && product.images.length > 0 ? product.images[0].url : '/img/fallback-image.jpg'}
                                                     className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
                                                 />
                                                 <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
