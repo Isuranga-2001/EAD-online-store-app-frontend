@@ -3,10 +3,12 @@ import { Dialog, Disclosure, Transition } from '@headlessui/react';
 import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { FunnelIcon } from '@heroicons/react/24/outline';
 import { getAllProducts, searchProducts } from '@/services/productService';
+import { getAllProductTypes } from '@/services/productTypeService';
 import { Product } from '@/interfaces/productInterface';
+import { ProductType } from '@/interfaces/productTypeInterface';
 import Pagination from '@/components/Pagination';
 
-const filters = [
+const initialFilters = [
     {
         id: 'price',
         name: 'Price',
@@ -34,6 +36,8 @@ const ProductsPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+    const [productTypes, setProductTypes] = useState<ProductType[]>([]);
+    const [filters, setFilters] = useState(initialFilters);
     const [filtersState, setFiltersState] = useState({
         min_price: undefined as number | undefined,
         max_price: undefined as number | undefined,
@@ -44,6 +48,35 @@ const ProductsPage = () => {
     });
     const [totalPages, setTotalPages] = useState<number>(1);
     const [jumpPage, setJumpPage] = useState<string>('1');
+    const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
+
+    useEffect(() => {
+        const fetchProductTypes = async () => {
+            try {
+                const types = await getAllProductTypes();
+                setProductTypes(types);
+                // Transform the response into the format required for the filters
+                const productTypeOptions = types.map((type) => ({
+                    value: type.ID.toString(),
+                    label: type.name,
+                    checked: false,
+                }));
+                // Add the product type options to the filters array
+                setFilters((prevFilters) => [
+                    ...prevFilters.filter(filter => filter.id !== 'product_type_id'),
+                    {
+                        id: 'product_type_id',
+                        name: 'Product Type',
+                        options: productTypeOptions,
+                    },
+                ]);
+            } catch (error) {
+                console.error('Failed to fetch product types:', error);
+            }
+        };
+
+        fetchProductTypes();
+    }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -101,6 +134,11 @@ const ProductsPage = () => {
                 [filterId]: optionValue,
             }));
         }
+        // Ensure the section remains open when an item is selected
+        setOpenSections((prevState) => ({
+            ...prevState,
+            [filterId]: true,
+        }));
     };
 
     const handlePageChange = (page: number) => {
@@ -121,12 +159,15 @@ const ProductsPage = () => {
         }
     };
 
+    const toggleSection = (sectionId: string) => {
+        setOpenSections((prevState) => ({
+            ...prevState,
+            [sectionId]: !prevState[sectionId],
+        }));
+    };
+
     if (loading) {
         return <div>Loading...</div>;
-    }
-
-    if (!products || products.length === 0) {
-        return <div>No products found.</div>;
     }
 
     return (
@@ -171,11 +212,14 @@ const ProductsPage = () => {
 
                                     <form className="mt-4 border-t border-gray-200">
                                         {filters.map((section) => (
-                                            <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
+                                            <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6" defaultOpen={openSections[section.id]}>
                                                 {({ open }) => (
                                                     <>
                                                         <h3 className="-mx-2 -my-3 flow-root">
-                                                            <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                                                            <Disclosure.Button
+                                                                className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
+                                                                onClick={() => toggleSection(section.id)}
+                                                            >
                                                                 <span className="font-medium text-gray-900">{section.name}</span>
                                                                 <span className="ml-6 flex items-center">
                                                                     {open ? (
@@ -195,7 +239,7 @@ const ProductsPage = () => {
                                                                             name={`${section.id}[]`}
                                                                             defaultValue={option.value}
                                                                             type="checkbox"
-                                                                            defaultChecked={option.checked}
+                                                                            checked={String(filtersState[section.id as keyof typeof filtersState]) === option.value}
                                                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                                             onChange={() => handleFilterChange(section.id as keyof typeof filtersState | 'price', option.value)}
                                                                         />
@@ -242,13 +286,16 @@ const ProductsPage = () => {
                         </h2>
 
                         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-                            <form className="mt-4 border-t border-gray-200">
+                            <form className="hidden lg:block">
                                 {filters.map((section) => (
-                                    <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
+                                    <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6" defaultOpen={openSections[section.id]}>
                                         {({ open }) => (
                                             <>
-                                                <h3 className="-mx-2 -my-3 flow-root">
-                                                    <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                                                <h3 className="-my-3 flow-root">
+                                                    <Disclosure.Button
+                                                        className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
+                                                        onClick={() => toggleSection(section.id)}
+                                                    >
                                                         <span className="font-medium text-gray-900">{section.name}</span>
                                                         <span className="ml-6 flex items-center">
                                                             {open ? (
@@ -260,21 +307,21 @@ const ProductsPage = () => {
                                                     </Disclosure.Button>
                                                 </h3>
                                                 <Disclosure.Panel className="pt-6">
-                                                    <div className="space-y-6">
+                                                    <div className="space-y-4">
                                                         {section.options.map((option, optionIdx) => (
                                                             <div key={option.value} className="flex items-center">
                                                                 <input
-                                                                    id={`filter-mobile-${section.id}-${optionIdx}`}
+                                                                    id={`filter-${section.id}-${optionIdx}`}
                                                                     name={`${section.id}[]`}
                                                                     defaultValue={option.value}
                                                                     type="checkbox"
-                                                                    defaultChecked={option.checked}
+                                                                    checked={String(filtersState[section.id as keyof typeof filtersState]) === option.value}
                                                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                                    onChange={() => handleFilterChange(section.id as keyof typeof filtersState, option.value)}
+                                                                    onChange={() => handleFilterChange(section.id as keyof typeof filtersState | 'price', option.value)}
                                                                 />
                                                                 <label
-                                                                    htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                                                    className="ml-3 min-w-0 flex-1 text-gray-500"
+                                                                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                                                                    className="ml-3 text-sm text-gray-600"
                                                                 >
                                                                     {option.label}
                                                                 </label>
@@ -289,22 +336,34 @@ const ProductsPage = () => {
                             </form>
 
                             <div className="lg:col-span-3">
-                                <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                                    {products.map((product) => (
-                                        <a key={product.ID} href="#" className="group">
-                                            <img
-                                                alt={product.name}
-                                                src={product.images && product.images.length > 0 ? product.images[0].url : '/fallback-image.jpg'}
-                                                className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
-                                            />
-                                            <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-                                            <p className="mt-1 text-lg font-medium text-gray-900">${product.price}</p>
-                                        </a>
-                                    ))}
-                                </div>
+                                {products.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center">
+                                        <img
+                                            src="/img/no-product-found.png"
+                                            alt="No products found"
+                                            className="w-1/2 h-1/2 object-cover"
+                                        />
+                                        {/* <p className="mt-4 text-lg font-medium text-gray-900">No products were found.</p> */}
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                                        {products.map((product) => (
+                                            <a key={product.ID} href="#" className="group">
+                                                <img
+                                                    alt={product.name}
+                                                    src={product.images && product.images.length > 0 ? product.images[0].url : '/fallback-image.jpg'}
+                                                    className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
+                                                />
+                                                <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+                                                <p className="mt-1 text-lg font-medium text-gray-900">${product.price}</p>
+                                            </a>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </section>
+
                     <Pagination
                         currentPage={filtersState.page}
                         totalPages={totalPages}
