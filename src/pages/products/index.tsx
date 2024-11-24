@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, Disclosure, Transition } from '@headlessui/react';
 import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { FunnelIcon } from '@heroicons/react/24/outline';
-import { getAllProducts, searchProducts } from '@/services/productService';
+import { searchProducts } from '@/services/productService';
 import { Product } from '@/interfaces/productInterface';
 
 const filters = [
@@ -34,7 +34,6 @@ const ProductsPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [filtersState, setFiltersState] = useState({
-        name: '',
         min_price: undefined,
         max_price: undefined,
         in_stock: undefined,
@@ -46,7 +45,7 @@ const ProductsPage = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await getAllProducts(filtersState.page, filtersState.page_size);
+                const response = await searchProducts(filtersState);
                 setProducts(response.products);
             } catch (error) {
                 console.error('Failed to fetch products:', error);
@@ -232,13 +231,14 @@ const ProductsPage = () => {
                                 ))}
                             </form>
 
+
                             <div className="lg:col-span-3">
                                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                                     {products.map((product) => (
                                         <a key={product.ID} href="#" className="group">
                                             <img
                                                 alt={product.name}
-                                                src={product.images[0]?.url || ''}
+                                                src={product.images && product.images.length > 0 ? product.images[0].url : ''}
                                                 className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
                                             />
                                             <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
