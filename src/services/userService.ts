@@ -86,3 +86,21 @@ export const forgotPassword = async (email: string): Promise<void> => {
     throw error;
   }
 };
+
+export const getAllUsers = async (
+  page: number,
+  size: number
+): Promise<{ users: User[]; total: number }> => {
+  try {
+    const response = await axiosInstance.get(`${BASE_URL}/users`, {
+      params: { page, size },
+    });
+    return {
+      users: response.data.content,
+      total: response.data.totalElements,
+    };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
