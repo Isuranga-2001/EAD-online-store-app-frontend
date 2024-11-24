@@ -1,9 +1,13 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import VisitorLayout from "@/components/VisitorLayout";
+import ProductList from './products';
+
 
 export default function Home() {
   return (
     <VisitorLayout>
-      <h1 className="text-red">Sankha</h1>
+      <ProductList />
     </VisitorLayout>
   );
 }
