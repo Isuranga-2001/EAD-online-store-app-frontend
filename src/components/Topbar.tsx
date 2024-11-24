@@ -43,8 +43,8 @@ const Topbar: React.FC<TopbarProps> = ({
   const selectedFeature = findFeature(selected);
 
   const handleLogout = () => {
-    // Implement your logout logic here
-    console.log("User logged out");
+    localStorage.removeItem("ead-token");
+    window.location.href = "/auth/signin";
   };
 
   return (
