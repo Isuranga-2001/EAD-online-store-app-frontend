@@ -22,7 +22,7 @@ export const getAllProducts = async (
     });
     return {
       total: response.data.total,
-      products: response.data.products,
+      products: response.data.data,
     };
   } catch (error) {
     console.error(error);
@@ -106,11 +106,13 @@ export const searchProducts = async (
   params: SearchParams
 ): Promise<ProductsResponse> => {
   try {
-    const response = await axiosInstance.get<ProductsResponse>(
-      `${BASE_URL}/products/search/`,
-      { params }
-    );
-    return response.data;
+    const response = await axiosInstance.get(`${BASE_URL}/products/search/`, {
+      params,
+    });
+    return {
+      total: response.data.total,
+      products: response.data.data,
+    };
   } catch (error) {
     console.error(error);
     throw error;
