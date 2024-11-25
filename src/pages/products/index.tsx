@@ -10,6 +10,7 @@ import Pagination from "@/components/Pagination";
 import VisitorLayout from "@/components/VisitorLayout";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
+import TextBox from "@/components/TextBox";
 
 const initialFilters = [
   {
@@ -29,10 +30,6 @@ const initialFilters = [
   },
 ];
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,6 +41,7 @@ const ProductsPage = () => {
     max_price: undefined as number | undefined,
     in_stock: undefined as boolean | undefined,
     product_type_id: undefined as number | undefined,
+    name: "" as string,
     page: 1,
     page_size: 12,
   });
@@ -52,6 +50,7 @@ const ProductsPage = () => {
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     const fetchProductTypes = async () => {
@@ -87,6 +86,7 @@ const ProductsPage = () => {
       try {
         let response;
         if (
+          filtersState.name === undefined &&
           filtersState.min_price === undefined &&
           filtersState.max_price === undefined &&
           filtersState.in_stock === undefined &&
@@ -98,6 +98,7 @@ const ProductsPage = () => {
           );
           console.log("response:", response);
         } else {
+          console.log("filtersState:", filtersState);
           response = await searchProducts(filtersState);
           console.log("search response:", response);
         }
@@ -178,6 +179,18 @@ const ProductsPage = () => {
     }));
   };
 
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+  };
+
+  const executeSearch = () => {
+    setFiltersState((prevState) => ({
+      ...prevState,
+      name: searchQuery,
+      page: 1,
+    }));
+  };
+
   const handlePageChange = (page: number) => {
     setFiltersState((prevState) => ({
       ...prevState,
@@ -210,9 +223,11 @@ const ProductsPage = () => {
       max_price: undefined,
       in_stock: undefined,
       product_type_id: undefined,
+      name: "",
       page: 1,
       page_size: 12,
     });
+    setSearchQuery("");
     //setOpenSections({});
   };
 
@@ -369,6 +384,21 @@ const ProductsPage = () => {
                   <FunnelIcon className="h-5 w-5" aria-hidden="true" />
                 </button>
               </div>
+            </div>
+
+            <div className="flex justify-center items-center">
+              <TextBox
+                value={searchQuery}
+                placeholder="Search by name"
+                onChange={handleSearchChange}
+                width="w-full"
+              />
+              <Button
+                caption="Search"
+                onClick={executeSearch}
+                width="w-auto"
+                buttonClassName="ml-2"
+              />
             </div>
 
             <section aria-labelledby="products-heading" className="pb-24 pt-6">
