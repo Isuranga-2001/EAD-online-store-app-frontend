@@ -1,10 +1,10 @@
-interface CartItem {
+export interface CartItem {
     productId: number;
     quantity: number;
     price: number;
   }
   
-interface Cart {
+export interface Cart {
     userId: number;
     status: 'PAID' | 'PENDING' | 'CANCELLED'; // Assuming possible statuses
     items: CartItem[];

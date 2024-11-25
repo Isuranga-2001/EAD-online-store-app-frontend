@@ -1,4 +1,24 @@
 import { CheckIcon, ClockIcon } from '@heroicons/react/20/solid'
+import {checkout} from '@/services/cartService'
+import { Cart } from '@/interfaces/cartInterface'
+
+const cart: Cart = {
+  userId: 1,
+  status: 'PENDING',
+  items: [
+    {
+      productId: 1,
+      quantity: 2,
+      price: 32,
+    },
+    {
+      productId: 2,
+      quantity: 1,
+      price: 32,
+    },
+  ],
+}
+
 
 const products = [
   {
