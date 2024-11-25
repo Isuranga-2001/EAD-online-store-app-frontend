@@ -13,8 +13,8 @@ interface ProductsResponse {
 }
 
 export const getAllProducts = async (
-  page: number,
-  pageSize: number
+    page: number,
+    pageSize: number
 ): Promise<ProductsResponse> => {
   try {
     const response = await axiosInstance.get(`${BASE_URL}/products`, {
@@ -22,7 +22,7 @@ export const getAllProducts = async (
     });
     return {
       total: response.data.total,
-      products: response.data.products,
+      products: response.data.data,
     };
   } catch (error) {
     console.error(error);
@@ -31,12 +31,12 @@ export const getAllProducts = async (
 };
 
 export const createProduct = async (
-  productData: CreateProduct
+    productData: CreateProduct
 ): Promise<Product> => {
   try {
     const response = await axiosInstance.post(
-      `${BASE_URL}/products`,
-      productData
+        `${BASE_URL}/products`,
+        productData
     );
     return response.data;
   } catch (error) {
@@ -56,13 +56,13 @@ export const getProductById = async (id: number): Promise<Product> => {
 };
 
 export const updateProduct = async (
-  id: number,
-  productData: UpdateProduct
+    id: number,
+    productData: UpdateProduct
 ): Promise<Product> => {
   try {
     const response = await axiosInstance.put(
-      `${BASE_URL}/products/${id}`,
-      productData
+        `${BASE_URL}/products/${id}`,
+        productData
     );
     return response.data;
   } catch (error) {
@@ -81,8 +81,8 @@ export const deleteProductById = async (id: number): Promise<void> => {
 };
 
 export const updateProductStock = async (
-  id: number,
-  stock: number
+    id: number,
+    stock: number
 ): Promise<void> => {
   try {
     await axiosInstance.patch(`${BASE_URL}/products/${id}/stock`, { stock });
@@ -103,14 +103,16 @@ interface SearchParams {
 }
 
 export const searchProducts = async (
-  params: SearchParams
+    params: SearchParams
 ): Promise<ProductsResponse> => {
   try {
-    const response = await axiosInstance.get<ProductsResponse>(
-      `${BASE_URL}/products/search/`,
-      { params }
-    );
-    return response.data;
+    const response = await axiosInstance.get(`${BASE_URL}/products/search/`, {
+      params,
+    });
+    return {
+      total: response.data.total,
+      products: response.data.data,
+    };
   } catch (error) {
     console.error(error);
     throw error;
