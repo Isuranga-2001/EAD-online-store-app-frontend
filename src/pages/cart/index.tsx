@@ -1,6 +1,8 @@
-import { CheckIcon, ClockIcon } from '@heroicons/react/20/solid'
+import { CheckIcon, XMarkIcon} from '@heroicons/react/20/solid'
 import {checkout} from '@/services/cartService'
 import { Cart } from '@/interfaces/cartInterface'
+
+
 
 const cart: Cart = {
   userId: 1,
@@ -9,7 +11,7 @@ const cart: Cart = {
     {
       productId: 1,
       quantity: 2,
-      price: 32,
+      price: 1000,
       name:'product 1',
       imageSrc:'https://www.sbsmobile.com/ned/247224-thickbox_default/floxy-headphones.jpg',
       imageAlt:'headphones',
@@ -19,9 +21,9 @@ const cart: Cart = {
     {
       productId: 2,
       quantity: 1,
-      price: 32,
+      price: 90000,
       name:'product 2',
-      imageSrc:'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08710524.png',
+      imageSrc:'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RW1geGv?ver=e834&q=90&m=6&h=705&w=1253&b=%23FFFFFFFF&f=jpg&o=f&p=140&aim=true',
       imageAlt:'laptop',
       instock:false
     },
@@ -29,34 +31,11 @@ const cart: Cart = {
 }
 
 
-/*const products = [
-  {
-    id: 1,
-    name: 'Artwork Tee',
-    href: '#',
-    price: '$32.00',
-    color: 'Mint',
-    size: 'Medium',
-    inStock: true,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/checkout-page-03-product-04.jpg',
-    imageAlt: 'Front side of mint cotton t-shirt with wavey lines pattern.',
-  },
-  {
-    id: 2,
-    name: 'Basic Tee',
-    href: '#',
-    price: '$32.00',
-    color: 'Charcoal',
-    inStock: false,
-    leadTime: '7-8 years',
-    size: 'Large',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
-    imageAlt: 'Front side of charcoal cotton t-shirt.',
-  },
-  // More products...
-]*/
 
 export default function Example() {
+
+  const totalPrice = cart.items.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0);
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:px-0">
@@ -80,24 +59,28 @@ export default function Example() {
                   </div>
 
                   <div className="ml-4 flex flex-1 flex-col sm:ml-6">
-                    <div>
+                  <div>
                       <div className="flex justify-between">
-                        
-                        <p className="ml-4 text-sm font-medium text-gray-900">{cartItem.price}</p>
+                        <h4 className="text-sm">
+                          <p className="font-medium text-gray-700 hover:text-gray-800">
+                            {cartItem.name}
+                          </p>
+                        </h4>
+                        <p className="ml-4 text-sm font-medium text-gray-900">Rs.{cartItem.price * cartItem.quantity}</p>
                       </div>
-                      <p className="mt-1 text-sm font-medium text-gray-900">{cartItem.name}</p>
                       <p className="mt-1 text-sm text-gray-500">{cartItem.quantity}</p>
+                      
                     </div>
 
                     <div className="mt-4 flex flex-1 items-end justify-between">
                       <p className="flex items-center space-x-2 text-sm text-gray-700">
                         {cartItem.instock? (
-                          <CheckIcon className="h-5 w-5 flex-shrink-0 text-green-500" aria-hidden="true" />
+                          <CheckIcon className="h-5 w-5 flex-shrink-0 text-light-green" aria-hidden="true" />
                         ) : (
-                          <ClockIcon className="h-5 w-5 flex-shrink-0 text-gray-300" aria-hidden="true" />
+                          <XMarkIcon className="h-5 w-5 flex-shrink-0 text-red" aria-hidden="true" />
                         )}
 
-                        <span>{cartItem.instock ? 'In stock' : `Will ship in ${cartItem.name}`}</span>
+                        <span>{cartItem.instock ? 'In stock' : 'Out Of Stock'}</span>
                       </p>
                       <div className="ml-4">
                         <button type="button" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
@@ -121,7 +104,7 @@ export default function Example() {
               <dl className="space-y-4">
                 <div className="flex items-center justify-between">
                   <dt className="text-base font-medium text-gray-900">Subtotal</dt>
-                  <dd className="ml-4 text-base font-medium text-gray-900">$96.00</dd>
+                  <dd className="ml-4 text-base font-medium text-gray-900">Rs.{totalPrice}</dd>
                 </div>
               </dl>
               <p className="mt-1 text-sm text-gray-500">Shipping and taxes will be calculated at checkout.</p>
