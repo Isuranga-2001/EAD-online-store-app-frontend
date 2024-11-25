@@ -2,6 +2,10 @@ export interface CartItem {
     productId: number;
     quantity: number;
     price: number;
+    name: string;
+    imageSrc: string;
+    imageAlt: string;
+    instock: boolean;
   }
   
 export interface Cart {

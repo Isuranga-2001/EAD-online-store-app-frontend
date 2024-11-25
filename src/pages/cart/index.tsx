@@ -10,17 +10,26 @@ const cart: Cart = {
       productId: 1,
       quantity: 2,
       price: 32,
+      name:'product 1',
+      imageSrc:'https://www.sbsmobile.com/ned/247224-thickbox_default/floxy-headphones.jpg',
+      imageAlt:'headphones',
+      instock:true
+
     },
     {
       productId: 2,
       quantity: 1,
       price: 32,
+      name:'product 2',
+      imageSrc:'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08710524.png',
+      imageAlt:'laptop',
+      instock:false
     },
   ],
 }
 
 
-const products = [
+/*const products = [
   {
     id: 1,
     name: 'Artwork Tee',
@@ -45,7 +54,7 @@ const products = [
     imageAlt: 'Front side of charcoal cotton t-shirt.',
   },
   // More products...
-]
+]*/
 
 export default function Example() {
   return (
@@ -60,12 +69,12 @@ export default function Example() {
             </h2>
 
             <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
-              {products.map((product) => (
-                <li key={product.id} className="flex py-6">
+              {cart.items.map((cartItem) => (
+                <li key={cartItem.productId} className="flex py-6">
                   <div className="flex-shrink-0">
                     <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
+                      src={cartItem.imageSrc}
+                      alt={cartItem.imageAlt}
                       className="h-24 w-24 rounded-md object-cover object-center sm:h-32 sm:w-32"
                     />
                   </div>
@@ -73,26 +82,22 @@ export default function Example() {
                   <div className="ml-4 flex flex-1 flex-col sm:ml-6">
                     <div>
                       <div className="flex justify-between">
-                        <h4 className="text-sm">
-                          <a href={product.href} className="font-medium text-gray-700 hover:text-gray-800">
-                            {product.name}
-                          </a>
-                        </h4>
-                        <p className="ml-4 text-sm font-medium text-gray-900">{product.price}</p>
+                        
+                        <p className="ml-4 text-sm font-medium text-gray-900">{cartItem.price}</p>
                       </div>
-                      <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-                      <p className="mt-1 text-sm text-gray-500">{product.size}</p>
+                      <p className="mt-1 text-sm font-medium text-gray-900">{cartItem.name}</p>
+                      <p className="mt-1 text-sm text-gray-500">{cartItem.quantity}</p>
                     </div>
 
                     <div className="mt-4 flex flex-1 items-end justify-between">
                       <p className="flex items-center space-x-2 text-sm text-gray-700">
-                        {product.inStock ? (
+                        {cartItem.instock? (
                           <CheckIcon className="h-5 w-5 flex-shrink-0 text-green-500" aria-hidden="true" />
                         ) : (
                           <ClockIcon className="h-5 w-5 flex-shrink-0 text-gray-300" aria-hidden="true" />
                         )}
 
-                        <span>{product.inStock ? 'In stock' : `Will ship in ${product.leadTime}`}</span>
+                        <span>{cartItem.instock ? 'In stock' : `Will ship in ${cartItem.name}`}</span>
                       </p>
                       <div className="ml-4">
                         <button type="button" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
