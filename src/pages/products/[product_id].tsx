@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getProductById } from "@/services/productService";
 import ProductDetails from "@/components/ProductDetails";
 import { Product } from "@/interfaces/productInterface";
+import VisitorLayout from "@/components/VisitorLayout";
 
 const ProductPage = () => {
     const router = useRouter();
@@ -27,10 +28,24 @@ const ProductPage = () => {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (!product) return <p>Product not found</p>;
+    if (loading)
+        return (
+            <VisitorLayout>
+                <p>Loading...</p>
+            </VisitorLayout>
+        );
+    if (!product)
+        return (
+            <VisitorLayout>
+                <p>Product not found</p>
+            </VisitorLayout>
+        );
 
-    return <ProductDetails product={product} />;
+    return (
+        <VisitorLayout>
+            <ProductDetails product={product} />
+        </VisitorLayout>
+    );
 };
 
 export default ProductPage;
