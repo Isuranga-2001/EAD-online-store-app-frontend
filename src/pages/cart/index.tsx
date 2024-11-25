@@ -1,6 +1,7 @@
 import { CheckIcon, XMarkIcon} from '@heroicons/react/20/solid'
 import {checkout} from '@/services/cartService'
 import { Cart } from '@/interfaces/cartInterface'
+import VisitorLayout from '@/components/VisitorLayout';
 
 
 
@@ -37,6 +38,7 @@ export default function Example() {
   const totalPrice = cart.items.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0);
 
   return (
+    <VisitorLayout>
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:px-0">
         <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
@@ -114,7 +116,7 @@ export default function Example() {
               <button
                 type="button"
                 onClick={handleCheckout}
-                className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                className="w-full rounded-md border border-transparent bg-green px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-light-green focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
               >
                 Checkout
               </button>
@@ -122,8 +124,8 @@ export default function Example() {
 
             <div className="mt-6 text-center text-sm">
               <p>
-                or
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                or &nbsp;
+                <a href="#" className="font-medium text-green hover:text-light-green">
                   Continue Shopping
                   <span aria-hidden="true"> &rarr;</span>
                 </a>
@@ -133,6 +135,7 @@ export default function Example() {
         </form>
       </div>
     </div>
+    </VisitorLayout>
   )
 }
 
