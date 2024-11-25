@@ -70,7 +70,7 @@ const AdminAddProductPage: React.FC = () => {
       price,
       stock,
       product_type_id: productTypeId,
-      images: images.map((file) => ({ url: URL.createObjectURL(file) })),
+      images: images,
     };
 
     try {
@@ -139,7 +139,7 @@ const AdminAddProductPage: React.FC = () => {
         <Button
           caption="Clear Fields"
           onClick={clearFields}
-          background="bg-light-blue"
+          background="bg-light-green"
         />
         <Button caption="Add Product" onClick={addProduct} />
       </div>

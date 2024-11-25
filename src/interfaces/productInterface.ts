@@ -21,7 +21,7 @@ export interface CreateProduct {
   price: number;
   stock: number;
   product_type_id: number;
-  images: CreateProductImage[];
+  images: File[] | null;
 }
 
 export interface UpdateProduct {
@@ -30,5 +30,5 @@ export interface UpdateProduct {
   price: number;
   stock: number;
   product_type_id: number;
-  images: CreateProductImage[];
+  images: File[] | null;
 }

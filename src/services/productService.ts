@@ -34,9 +34,33 @@ export const createProduct = async (
   productData: CreateProduct
 ): Promise<Product> => {
   try {
+    const formData = new FormData();
+    formData.append("name", productData.name);
+    formData.append("description", productData.description);
+    formData.append("price", productData.price.toString());
+    formData.append("stock", productData.stock.toString());
+    formData.append("product_type_id", productData.product_type_id.toString());
+
+    // Append images if they exist
+    // if (productData.images && productData.images.length > 0) {
+    //   productData.images.forEach((image, index) => {
+    //     formData.append(`images[${index}]`, image);
+    //   });
+    // }
+    if (productData.images && productData.images.length > 0) {
+      Array.from(productData.images).forEach((file) => {
+        formData.append("images", file);
+      });
+    }
+
     const response = await axiosInstance.post(
-      `${BASE_URL}/products`,
-      productData
+      `${BASE_URL}/products/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -60,9 +84,28 @@ export const updateProduct = async (
   productData: UpdateProduct
 ): Promise<Product> => {
   try {
+    const formData = new FormData();
+    formData.append("name", productData.name);
+    formData.append("description", productData.description);
+    formData.append("price", productData.price.toString());
+    formData.append("stock", productData.stock.toString());
+    formData.append("product_type_id", productData.product_type_id.toString());
+
+    // Append images if they exist
+    if (productData.images && productData.images.length > 0) {
+      Array.from(productData.images).forEach((file) => {
+        formData.append("images", file);
+      });
+    }
+
     const response = await axiosInstance.put(
       `${BASE_URL}/products/${id}`,
-      productData
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return response.data;
   } catch (error) {
