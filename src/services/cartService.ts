@@ -14,7 +14,8 @@ const checkoutCart = {
     })),
 }
   try{
-    const { data } = await axios.post(`${BASE_URL}/order`, checkoutCart);
+    const { data } = await axios.post(`${BASE_URL}/orders`, checkoutCart);
+    console.log("data added to cart");
     return data;
   }
     catch (error) {
