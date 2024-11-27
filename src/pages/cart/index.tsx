@@ -28,6 +28,18 @@ const cart: Cart = {
       imageAlt:'laptop',
       instock:false
     },
+    /*
+    {
+      productId: 3,
+      quantity: 1,
+      price: 650,
+      name:'product 1',
+      imageSrc:'https://lifemobile.lk/wp-content/uploads/2021/07/Coteetci-Universal-Dual-Mode-Bluetooth-Mouse-01.jpg',
+      imageAlt:'mouse',
+      instock:true
+
+    },
+    */
   ],
 }
 
@@ -85,7 +97,7 @@ export default function Example() {
                         <span>{cartItem.instock ? 'In stock' : 'Out Of Stock'}</span>
                       </p>
                       <div className="ml-4">
-                        <button type="button" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                        <button type="button"  className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                           <span>Remove</span>
                         </button>
                       </div>
@@ -142,8 +154,10 @@ export default function Example() {
 async function handleCheckout() {
   try {
     const response = await checkout(cart)
+    window.alert('Order placed successfully!');
     console.log('order placed successfully',response)
   } catch (error) {
     console.error(error)
+    window.alert('Failed to place the order. Please try again.');
   }
 }
