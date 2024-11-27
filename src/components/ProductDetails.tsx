@@ -5,6 +5,7 @@ import { Product } from "@/interfaces/productInterface";
 const ProductDetails = ({ product }: { product: Product }) => {
     const [quantity, setQuantity] = useState(1);
 
+
     const handleQuantityChange = (type: "increment" | "decrement") => {
         if (type === "increment" && quantity < product.stock) {
             setQuantity((prev) => prev + 1);
