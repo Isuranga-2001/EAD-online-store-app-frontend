@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { User } from "@/interfaces/userInterface";
+import { User, UserType } from "@/interfaces/userInterface";
 
 interface UserContextType {
   user: User | null;
@@ -16,7 +16,17 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>({
+    id: 1,
+    name: "Sankha Bimsara",
+    email: "sankha@gmail.com",
+    type: UserType.USER,
+    phone: "0712345678",
+    country: "Sri Lanka",
+    postalCode: 10250,
+    createdAt: "2021-08-13T09:00:00Z",
+    updatedAt: "2021-08-13T09:00:00Z",
+  });
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
