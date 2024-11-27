@@ -100,10 +100,10 @@ const ProductDetails = ({ product }: { product: Product }) => {
                             </div>
 
                             {/* Product Type */}
-                            {/*<div className="mt-6">*/}
-                            {/*    <h3 className="text-sm font-bold">Product Type</h3>*/}
-                            {/*    <p className="mt-2">{product.product_type.name}</p>*/}
-                            {/*</div>*/}
+                            <div className="mt-6">
+                                <h3 className="text-sm font-bold">Product Type</h3>
+                                <p className="mt-2">{product.product_type.name}</p>
+                            </div>
                         </div>
                     </div>
 
