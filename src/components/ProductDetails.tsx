@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { HeartIcon } from "@heroicons/react/24/outline";
 import { Tab } from "@headlessui/react";
 import { Product } from "@/interfaces/productInterface";
 
@@ -89,13 +88,6 @@ const ProductDetails = ({ product }: { product: Product }) => {
                                     className="flex max-w-xs flex-1 items-center justify-center rounded-md bg-black px-8 py-3 text-base font-medium text-white hover:bg-gray-700"
                                 >
                                     Add to cart
-                                </button>
-                                <button
-                                    type="button"
-                                    className="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100"
-                                >
-                                    <HeartIcon className="h-6 w-6 text-gray-400 hover:text-red-500" />
-                                    <span className="sr-only">Add to favorites</span>
                                 </button>
                             </div>
 
