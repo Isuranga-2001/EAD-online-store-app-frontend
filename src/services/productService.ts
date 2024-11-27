@@ -13,8 +13,8 @@ interface ProductsResponse {
 }
 
 export const getAllProducts = async (
-  page: number,
-  pageSize: number
+    page: number,
+    pageSize: number
 ): Promise<ProductsResponse> => {
   try {
     const response = await axiosInstance.get(`${BASE_URL}/products`, {
@@ -31,7 +31,7 @@ export const getAllProducts = async (
 };
 
 export const createProduct = async (
-  productData: CreateProduct
+    productData: CreateProduct
 ): Promise<Product> => {
   try {
     const formData = new FormData();
@@ -80,8 +80,8 @@ export const getProductById = async (id: number): Promise<Product> => {
 };
 
 export const updateProduct = async (
-  id: number,
-  productData: UpdateProduct
+    id: number,
+    productData: UpdateProduct
 ): Promise<Product> => {
   try {
     const formData = new FormData();
@@ -124,8 +124,8 @@ export const deleteProductById = async (id: number): Promise<void> => {
 };
 
 export const updateProductStock = async (
-  id: number,
-  stock: number
+    id: number,
+    stock: number
 ): Promise<void> => {
   try {
     await axiosInstance.patch(`${BASE_URL}/products/${id}/stock`, { stock });
@@ -146,7 +146,7 @@ interface SearchParams {
 }
 
 export const searchProducts = async (
-  params: SearchParams
+    params: SearchParams
 ): Promise<ProductsResponse> => {
   try {
     const response = await axiosInstance.get(`${BASE_URL}/products/search/`, {
