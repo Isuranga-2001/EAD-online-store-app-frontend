@@ -10,7 +10,11 @@ import MultipleImageUpload from "@/components/MultipleImageUpload";
 import Button from "@/components/Button";
 import { toast } from "react-toastify";
 import { Product } from "@/interfaces/productInterface";
-import { getProductById, updateProduct } from "@/services/productService";
+import {
+  getProductById,
+  updateProduct,
+  deleteProductById,
+} from "@/services/productService";
 import { getAllProductTypes } from "@/services/productTypeService";
 
 const AdminEditProductPage: React.FC = () => {
@@ -97,12 +101,13 @@ const AdminEditProductPage: React.FC = () => {
       price,
       stock,
       product_type_id: productTypeId,
-      images: images.map((file) => ({ url: URL.createObjectURL(file) })),
+      images: images,
     };
 
     try {
       await updateProduct(Number(product_id), updatedProduct);
       toast.success("Product updated successfully!");
+      resetFields();
       fetchProduct(Number(product_id));
     } catch (error) {
       console.error(error);
@@ -113,7 +118,19 @@ const AdminEditProductPage: React.FC = () => {
   };
 
   const deleteProduct = async () => {
-    // Implement delete product functionality
+    if (!product_id) return;
+
+    setLoading(true);
+    try {
+      await deleteProductById(Number(product_id));
+      toast.success("Product deleted successfully!");
+      router.push("/admin/products");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete product.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
