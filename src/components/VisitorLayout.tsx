@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { FaSignOutAlt, FaUserCircle, FaShoppingCart } from "react-icons/fa";
 import Footer from "@/components/Footer"; // Import the Footer component
+import Link from "next/link";
 
 interface VisitorLayoutProps {
   children: ReactNode;
@@ -22,8 +23,12 @@ const VisitorLayout: React.FC<VisitorLayoutProps> = ({ children }) => {
           </div>
         </div>
         <div className="flex items-center">
-          <FaShoppingCart className="mx-4 text-2xl cursor-pointer text-white hover:text-light-green duration-300 transition-all ease-in-out" />
-          <FaUserCircle className="mx-4 text-2xl cursor-pointer text-white hover:text-light-green duration-300 transition-all ease-in-out" />
+          <Link href={"/cart"}>
+            <FaShoppingCart className="mx-4 text-2xl cursor-pointer text-white hover:text-light-green duration-300 transition-all ease-in-out" />
+          </Link>
+          <Link href={"/user"}>
+            <FaUserCircle className="mx-4 text-2xl cursor-pointer text-white hover:text-light-green duration-300 transition-all ease-in-out" />
+          </Link>
           <FaSignOutAlt className="mx-4 text-2xl cursor-pointer text-white hover:text-light-green duration-300 transition-all ease-in-out" />
         </div>
       </header>

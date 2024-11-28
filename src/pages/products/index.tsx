@@ -11,6 +11,7 @@ import VisitorLayout from "@/components/VisitorLayout";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import TextBox from "@/components/TextBox";
+import Link from "next/link";
 
 const initialFilters = [
   {
@@ -505,7 +506,11 @@ const ProductsPage = () => {
                   ) : (
                     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                       {products.map((product) => (
-                        <a key={product.ID} href="#" className="group">
+                        <Link
+                          key={product.ID}
+                          href={`/products/${product.ID}`}
+                          className="group"
+                        >
                           <img
                             alt={product.name}
                             src={
@@ -521,7 +526,7 @@ const ProductsPage = () => {
                           <p className="mt-1 text-lg font-medium text-gray-900">
                             ${product.price}
                           </p>
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   )}

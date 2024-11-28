@@ -1,5 +1,5 @@
 import { ProductType } from "./productTypeInterface";
-import { ProductImage, CreateProductImage } from "./productImageInterface";
+import { ProductImage } from "./productImageInterface";
 
 export interface Product {
   ID: number;
