@@ -1,9 +1,18 @@
+import { Product } from './productInterface';
+import { User } from './userInterface';
+import{Payment,PaymentType} from './paymentInterface';
+
+
 export interface OrderItem {
     productId: number;
     quantity: number;
     price: number;
   }
-  
+
+export interface  OrderItemWithProduct extends OrderItem {
+    product: Product;
+  }
+
 export  interface Order {
     id: number;
     userId: number;
@@ -11,18 +20,25 @@ export  interface Order {
     items: OrderItem[];
   }
 
+export interface OrderWithDetails{
+    id: number;
+    userId: number;
+    status: string;
+    items: OrderItemWithProduct[];
+    payment: Payment;  
+}
+
 export interface GetAllOrders{
     orders: Order[];
   }
 
-export interface GetOrderById{ 
-    order: Order;
-  }
+export interface GetOrderById extends OrderWithDetails{
+  userId: number;
+}
 
 export interface GetOrderByUserId{
-    orders: Order[];
-  }
-
+  orders:OrderWithDetails[];
+}
 
 export interface CreateOrder {
     userId: number;
@@ -30,7 +46,7 @@ export interface CreateOrder {
   }
 
 export interface CreateOrderWithPayment extends CreateOrder {
-    paymentType: string;
+    paymentType: PaymentType;
 }
 
 
