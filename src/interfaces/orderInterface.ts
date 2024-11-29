@@ -24,7 +24,7 @@ export interface OrderWithDetails {
   userId: number;
   status: string;
   items: OrderItemWithProduct[];
-  payment: Payment;
+  payment: Payment[];
 }
 
 export interface OrderWithDetailsAndUser extends OrderWithDetails {
