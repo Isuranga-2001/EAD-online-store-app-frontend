@@ -5,11 +5,24 @@ export interface OrderItem {
   }
   
 export  interface Order {
-    orderId: number;
+    id: number;
     userId: number;
     status: string;
     items: OrderItem[];
   }
+
+export interface GetAllOrders{
+    orders: Order[];
+  }
+
+export interface GetOrderById{ 
+    order: Order;
+  }
+
+export interface GetOrderByUserId{
+    orders: Order[];
+  }
+
 
 export interface CreateOrder {
     userId: number;
