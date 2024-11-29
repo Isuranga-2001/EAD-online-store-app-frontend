@@ -22,8 +22,8 @@ const Signin: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const { setUser } = useUser();
-  const [email, setEmail] = useState("dennissimmons1985@gmail.com");
-  const [password, setPassword] = useState("sbasba");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const router = useRouter();
 

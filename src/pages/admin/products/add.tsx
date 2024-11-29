@@ -51,6 +51,7 @@ const AdminAddProductPage: React.FC = () => {
   };
 
   const addProduct = async () => {
+    console.log(name, description, price, stock, productTypeId, images);
     if (
       name.trim() === "" ||
       description.trim() === "" ||
@@ -123,7 +124,7 @@ const AdminAddProductPage: React.FC = () => {
         caption="Description"
         containerClassName="mt-3"
         rows={5}
-        maxCharCount={200}
+        maxCharCount={500}
       />
       <MultipleImageUpload
         name="product-images"
