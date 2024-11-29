@@ -1,37 +1,34 @@
 import React from "react";
 import TextBox from "@/components/TextBox";
 import Button from "@/components/Button";
+import { forgotPassword } from "@/services/userService";
+import { toast } from "react-toastify";
+import { useUser } from "@/contexts/userContext";
 
 const ResetPassword: React.FC = () => {
+  const { user } = useUser();
+
+  const resetPassword = async () => {
+    try {
+      if (user) {
+        await forgotPassword(user.email);
+      }
+
+      toast.success("Password reset link sent to your email!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to reset password!");
+    }
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Reset Password</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <TextBox
-          placeholder="Enter current password"
-          caption="Current Password"
-          type="password"
-          value=""
-          onChange={() => {}}
-        />
-        <TextBox
-          placeholder="Enter new password"
-          caption="New Password"
-          type="password"
-          value=""
-          onChange={() => {}}
-        />
-        <TextBox
-          placeholder="Confirm new password"
-          caption="Confirm New Password"
-          type="password"
-          value=""
-          onChange={() => {}}
-        />
-      </div>
       <Button
         caption="Reset Password"
-        onClick={() => {}}
+        onClick={() => {
+          resetPassword();
+        }}
         buttonClassName="mt-4"
       />
     </div>

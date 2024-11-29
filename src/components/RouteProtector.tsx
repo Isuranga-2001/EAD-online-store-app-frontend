@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useUser } from "@/contexts/userContext";
 import LoadingScreen from "@/components/LoadingScreen";
 import { isTokenExpiredFunction, getTokenContent } from "@/utils/authUtils";
-import { getUserById } from "@/services/userService";
+import { getUserByEmail } from "@/services/userService";
 import { User, UserType } from "@/interfaces/userInterface";
 
 export default function RouteProtector({
@@ -13,7 +13,7 @@ export default function RouteProtector({
 }) {
   const router = useRouter();
   const { user, setUser } = useUser();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkTokenExpiry = async (): Promise<boolean> => {
@@ -31,7 +31,7 @@ export default function RouteProtector({
         return null;
       }
       const content = getTokenContent(token);
-      const response = await getUserById(content.id);
+      const response = await getUserByEmail(content.email);
       if (!response) {
         return null;
       }
@@ -101,7 +101,7 @@ export default function RouteProtector({
       }
     };
 
-    //checkAccess();
+    checkAccess();
   }, [router.pathname, user]);
 
   if (loading) {

@@ -23,7 +23,7 @@ const Signin: React.FC = () => {
 
   const { setUser } = useUser();
   const [email, setEmail] = useState("dennissimmons1985@gmail.com");
-  const [password, setPassword] = useState("dennis");
+  const [password, setPassword] = useState("sbasba");
 
   const router = useRouter();
 
