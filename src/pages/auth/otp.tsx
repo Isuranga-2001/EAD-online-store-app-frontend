@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import TextBox from "@/components/TextBox";
 import Button from "@/components/Button";
 import Spinner from "@/components/Spinner";
@@ -14,18 +13,24 @@ import {
   UnexpectedException,
 } from "@/utils/exceptions";
 import { useGeneralContext } from "@/contexts/generalContext";
+import { verifyOTP, resetPassword } from "@/services/userService";
 
 const OTPPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
+  const [email, setEmail] = useState<string | null>(null);
 
   const router = useRouter();
 
   const { showAlertBox, hideAlertBox } = useGeneralContext();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (router.query.email) {
+      setEmail(router.query.email as string);
+    }
+  }, [router.query.email]);
 
   const handlePasswordReset = async () => {
     if (password === "" || password2 === "") {
@@ -35,26 +40,6 @@ const OTPPage: React.FC = () => {
 
     if (password !== password2) {
       toast.warning("Passwords do not match.");
-      return;
-    }
-
-    if (password.length < 8 || password.length > 15) {
-      toast.warning("Password must be between 8 and 15 characters long.");
-      return;
-    }
-
-    if (!/[A-Z]/.test(password)) {
-      toast.warning("Password must contain at least one uppercase letter.");
-      return;
-    }
-
-    if (!/[a-z]/.test(password)) {
-      toast.warning("Password must contain at least one lowercase letter.");
-      return;
-    }
-
-    if (!/[0-9]/.test(password)) {
-      toast.warning("Password must contain at least one number.");
       return;
     }
 
@@ -68,19 +53,30 @@ const OTPPage: React.FC = () => {
 
     try {
       setLoading(true);
-      const email = router.query.email as string;
-      // await verifyForgotPassword(email, otp.join(""), password);
-      toast.success("Password reset successful.");
-      showAlertBox({
-        isVisible: true,
-        title: "Success",
-        body: "Password reset successful. You can now sign in with your new password.",
-        buttonStructure: 0,
-        button1OnClick: () => {
-          hideAlertBox();
-          router.push("/auth/signin");
-        },
-      });
+
+      const response = await verifyOTP(email as string, otp.join(""));
+
+      if (response) {
+        const success = await resetPassword(response, password);
+
+        if (success) {
+          toast.success("Password reset successful.");
+          showAlertBox({
+            isVisible: true,
+            title: "Success",
+            body: "Password reset successful. You can now sign in with your new password.",
+            buttonStructure: 0,
+            button1OnClick: () => {
+              hideAlertBox();
+              router.push("/auth/signin");
+            },
+          });
+        } else {
+          toast.error("An error occurred while resetting your password.");
+        }
+      } else {
+        toast.error("An error occurred while verifying OTP");
+      }
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         toast.error("Invalid OTP.");

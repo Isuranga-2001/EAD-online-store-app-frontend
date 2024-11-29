@@ -6,7 +6,7 @@ import Spinner from "@/components/Spinner";
 import Toast from "@/components/Toast";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { loginUser } from "@/services/userService";
+import { createUser } from "@/services/userService";
 import { useUser } from "@/contexts/userContext";
 import { User, UserType } from "@/interfaces/userInterface";
 import {
@@ -26,6 +26,7 @@ const Signup: React.FC = () => {
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState<number | undefined>(undefined);
+  const [reenterPassword, setReenterPassword] = useState("");
 
   const router = useRouter();
 
@@ -39,53 +40,35 @@ const Signup: React.FC = () => {
       password === "" ||
       name === "" ||
       phone === "" ||
-      country === ""
+      country === "" ||
+      reenterPassword === ""
     ) {
       toast.warning("Please fill in all required fields.");
+      return;
+    }
+
+    if (password !== reenterPassword) {
+      toast.warning("Passwords do not match.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const response = await loginUser(email, password);
-
-      // // Save token and email to localStorage
-      // localStorage.setItem("ead-token", response.token);
-
-      // // Save user details in context
-      // const tokenContent = getTokenContent(response.token);
-
-      // let userRole: UserType;
-
-      // if (response.user_role === "ADMIN") {
-      //   userRole = UserType.ADMIN;
-      // } else {
-      //   userRole = UserType.NAH;
-      // }
-
-      // const user: User = {
-      //   id: tokenContent.id,
-      //   name: response.name,
-      //   type: userRole,
-      //   email: email,
-      //   country: response.country,
-      //   phone: response.phone,
-      //   postalCode: response.postalCode,
-      //   created_at: "",
-      //   updated_at: "",
-      //   deleted: false,
-      // };
-      // setUser(user);
+      await createUser({
+        type: UserType.USER,
+        name,
+        email,
+        phone,
+        country,
+        postalCode,
+        password,
+      });
 
       // Redirect to the dashboard or another page
-      toast.success("Sign in successful. Please wait...");
-      console.log("Login successful:", response);
+      toast.success("Please check your email inbox");
 
-      const redirectRoute = Array.isArray(router.query.redirect)
-        ? router.query.redirect[0]
-        : router.query.redirect || "/";
-      router.push(redirectRoute);
+      router.push("/auth/signin");
     } catch (error) {
       console.error(error);
       if (error instanceof UnauthorizedException) {
@@ -115,7 +98,7 @@ const Signup: React.FC = () => {
         style={{ zIndex: 1 }}
       ></div>
       <div
-        className="bg-white bg-opacity-50 rounded-xl p-4 sm:px-10 border border-gray-200 border-opacity-70 w-80 sm:w-96 h-[750px] flex flex-col items-center justify-center space-y-2"
+        className="bg-white bg-opacity-50 rounded-xl p-4 sm:px-10 border border-gray-200 border-opacity-70 w-80 sm:w-[700px] h-[600px] flex flex-col items-center justify-center space-y-2"
         style={{ zIndex: 2 }}
       >
         <img
@@ -127,53 +110,57 @@ const Signup: React.FC = () => {
           Administration Portal
         </h1>
         <div className="w-full">
-          <TextBox
-            caption="Name"
-            value={name}
-            type="text"
-            placeholder="Enter your name"
-            onChange={(e) => setName(e)}
-          />
-          <TextBox
-            caption="Email"
-            value={email}
-            type="text"
-            placeholder="Enter your email"
-            onChange={(e) => setEmail(e)}
-            componentClassName={"mt-4"}
-          />
-          <TextBox
-            caption="Password"
-            value={password}
-            type="password"
-            placeholder="Enter your password"
-            onChange={(e) => setPassword(e)}
-            componentClassName={"mt-4"}
-          />
-          <TextBox
-            caption="Phone"
-            value={phone}
-            type="text"
-            placeholder="Enter your phone number"
-            onChange={(e) => setPhone(e)}
-            componentClassName={"mt-4"}
-          />
-          <TextBox
-            caption="Country"
-            value={country}
-            type="text"
-            placeholder="Enter your country"
-            onChange={(e) => setCountry(e)}
-            componentClassName={"mt-4"}
-          />
-          <TextBox
-            caption="Postal Code"
-            value={postalCode?.toString() || ""}
-            type="text"
-            placeholder="Enter your postal code"
-            onChange={(e) => setPostalCode(Number(e))}
-            componentClassName={"mt-4"}
-          />
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+            <TextBox
+              caption="Name"
+              value={name}
+              type="text"
+              placeholder="Enter your name"
+              onChange={(e) => setName(e)}
+            />
+            <TextBox
+              caption="Email"
+              value={email}
+              type="text"
+              placeholder="Enter your email"
+              onChange={(e) => setEmail(e)}
+            />
+            <TextBox
+              caption="Password"
+              value={password}
+              type="password"
+              placeholder="Enter your password"
+              onChange={(e) => setPassword(e)}
+            />
+            <TextBox
+              caption="Re-enter Password"
+              value={reenterPassword}
+              type="password"
+              placeholder="Re-enter your password"
+              onChange={(e) => setReenterPassword(e)}
+            />
+            <TextBox
+              caption="Phone"
+              value={phone}
+              type="text"
+              placeholder="Enter your phone number"
+              onChange={(e) => setPhone(e)}
+            />
+            <TextBox
+              caption="Country"
+              value={country}
+              type="text"
+              placeholder="Enter your country"
+              onChange={(e) => setCountry(e)}
+            />
+            <TextBox
+              caption="Postal Code"
+              value={postalCode?.toString() || ""}
+              type="text"
+              placeholder="Enter your postal code"
+              onChange={(e) => setPostalCode(Number(e))}
+            />
+          </div>
           <div className="flex flex-col items-center justify-center mt-4">
             <Button caption="SIGN UP" onClick={handleSignUp} />
             <Link href="/auth/forgotpassword">

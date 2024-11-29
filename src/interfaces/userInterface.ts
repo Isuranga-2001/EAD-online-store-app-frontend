@@ -10,6 +10,7 @@ export interface CreateUser {
   phone: string;
   country: string;
   postalCode?: number;
+  password: string;
 }
 
 export interface User {
@@ -32,4 +33,9 @@ export interface UpdateUser {
   phone: string;
   country: string;
   postalCode: number;
+}
+
+export interface LoginInterface {
+  token: string;
+  user: User;
 }
