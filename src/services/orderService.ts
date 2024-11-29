@@ -1,18 +1,14 @@
-import axios from 'axios';
-import { Order,  CreateOrder, CreateOrderWithPayment, GetAllOrders, GetOrderById, GetOrderByUserId} from '../interfaces/orderInterface';
+import axiosInstance from "../utils/axiosInstance";
+import {
+  Order,
+  CreateOrder,
+  CreateOrderWithPayment,
+  OrderWithDetails,
+} from "../interfaces/orderInterface";
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,  
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-export const getAllOrders = async (): Promise<GetAllOrders> => {
+export const getAllOrders = async (): Promise<Order[]> => {
   try {
-    const response = await axiosInstance.get('/orders');
+    const response = await axiosInstance.get("/orders");
     return response.data;
   } catch (error) {
     console.error(error);
@@ -20,7 +16,9 @@ export const getAllOrders = async (): Promise<GetAllOrders> => {
   }
 };
 
-export const getOrderById = async (orderId: number): Promise<GetOrderById> => {
+export const getOrderById = async (
+  orderId: number
+): Promise<OrderWithDetails> => {
   try {
     const response = await axiosInstance.get(`/orders/${orderId}`);
     return response.data;
@@ -30,7 +28,9 @@ export const getOrderById = async (orderId: number): Promise<GetOrderById> => {
   }
 };
 
-export const getOrderByUserId = async (userId: number): Promise<GetOrderByUserId> => {
+export const getOrderByUserId = async (
+  userId: number
+): Promise<OrderWithDetails[]> => {
   try {
     const response = await axiosInstance.get(`/orders/user/${userId}`);
     return response.data;
@@ -42,7 +42,7 @@ export const getOrderByUserId = async (userId: number): Promise<GetOrderByUserId
 
 export const createOrder = async (order: CreateOrder): Promise<Order> => {
   try {
-    const response = await axiosInstance.post('/orders', order);
+    const response = await axiosInstance.post("/orders", order);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -50,9 +50,11 @@ export const createOrder = async (order: CreateOrder): Promise<Order> => {
   }
 };
 
-export const createOrderWithPayment = async (order: CreateOrderWithPayment): Promise<Order> => {
+export const createOrderWithPayment = async (
+  order: CreateOrderWithPayment
+): Promise<Order> => {
   try {
-    const response = await axiosInstance.post('/orders/with-payment', order);
+    const response = await axiosInstance.post("/orders/with-payment", order);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -69,9 +71,15 @@ export const deleteOrderById = async (orderId: number): Promise<void> => {
   }
 };
 
-export const updatePaymentStatus = async (orderId: number, status: string): Promise<Order> => {
+export const updatePaymentStatus = async (
+  orderId: number,
+  status: string
+): Promise<Order> => {
   try {
-    const response = await axiosInstance.patch(`/orders/${orderId}/payment-status`, { status });
+    const response = await axiosInstance.patch(
+      `/orders/${orderId}/payment-status`,
+      { status }
+    );
     return response.data;
   } catch (error) {
     console.error(error);
