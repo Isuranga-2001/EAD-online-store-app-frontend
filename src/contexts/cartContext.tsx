@@ -45,9 +45,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       );
       if (existingItem) {
         return prevItems.map((cartItem) =>
-          cartItem.ID === item.ID
-            ? { ...cartItem, qty: cartItem.qty + item.qty }
-            : cartItem
+          cartItem.ID === item.ID ? { ...cartItem, qty: item.qty } : cartItem
         );
       } else {
         return [...prevItems, item];

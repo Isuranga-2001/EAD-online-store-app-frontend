@@ -1,6 +1,6 @@
 import { Product } from "./productInterface";
 import { User } from "./userInterface";
-import { Payment, PaymentType } from "./paymentInterface";
+import { Payment } from "./paymentInterface";
 
 export interface OrderItem {
   productId: number;
@@ -37,5 +37,5 @@ export interface CreateOrder {
 }
 
 export interface CreateOrderWithPayment extends CreateOrder {
-  paymentType: PaymentType;
+  paymentType: string;
 }

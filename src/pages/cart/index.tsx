@@ -2,11 +2,20 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useCart } from "@/contexts/cartContext";
 import VisitorLayout from "@/components/VisitorLayout";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import Toast from "@/components/Toast";
 
 export default function Example() {
+  const router = useRouter();
   const { cartItems, totalPrice, removeFromCart } = useCart();
 
-  const handleCheckout = async () => {};
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      toast.error("No items added to the cart");
+    }
+    router.push("/pay");
+  };
 
   return (
     <VisitorLayout>
@@ -141,6 +150,7 @@ export default function Example() {
           </form>
         </div>
       </div>
+      <Toast />
     </VisitorLayout>
   );
 }
