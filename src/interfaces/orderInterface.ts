@@ -27,6 +27,10 @@ export interface OrderWithDetails {
   payment: Payment;
 }
 
+export interface OrderWithDetailsAndUser extends OrderWithDetails {
+  user: User;
+}
+
 export interface CreateOrder {
   userId: number;
   items: OrderItem[];

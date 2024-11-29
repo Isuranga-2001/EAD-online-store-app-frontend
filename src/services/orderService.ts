@@ -4,6 +4,7 @@ import {
   CreateOrder,
   CreateOrderWithPayment,
   OrderWithDetails,
+  OrderWithDetailsAndUser,
 } from "../interfaces/orderInterface";
 
 export const getAllOrders = async (): Promise<Order[]> => {
@@ -18,7 +19,7 @@ export const getAllOrders = async (): Promise<Order[]> => {
 
 export const getOrderById = async (
   orderId: number
-): Promise<OrderWithDetails> => {
+): Promise<OrderWithDetailsAndUser> => {
   try {
     const response = await axiosInstance.get(`/orders/${orderId}`);
     return response.data;
