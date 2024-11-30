@@ -67,7 +67,6 @@ const ProductDetails = ({ product }: { product: Product }) => {
             <div className="px-4">
               <h1 className="text-3xl font-bold">{product.name}</h1>
               <p className="text-2xl mt-3">{`Price: $${product.price}`}</p>
-              <p className="text-gray-600 mt-2">{product.description}</p>
 
               {/* Quantity Selector */}
               <div className="mt-6">
@@ -104,11 +103,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
                 </button>
               </div>
 
-              {/* Product Type */}
-              <div className="mt-6">
-                <h3 className="text-sm font-bold">Product Type</h3>
-                <p className="mt-2">{product.product_type.name}</p>
-              </div>
+
             </div>
           </div>
 
