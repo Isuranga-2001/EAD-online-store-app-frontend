@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import VisitorLayout from "@/components/VisitorLayout";
 import { useUser } from "@/contexts/userContext";
 import { updateUser } from "@/services/userService";
@@ -11,6 +12,7 @@ import ResetPassword from "@/components/ResetPassword";
 import OrderHistory from "@/components/OrderHistory";
 
 const UserDetailsPage: React.FC = () => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { user, setUser } = useUser();
   const [userData, setUserData] = useState<User | null>(user);
@@ -18,6 +20,8 @@ const UserDetailsPage: React.FC = () => {
   useEffect(() => {
     if (user) {
       setUserData(user);
+    } else {
+      router.push("/auth/signin");
     }
   }, [user]);
 
