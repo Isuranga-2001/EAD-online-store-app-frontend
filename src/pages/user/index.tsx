@@ -8,6 +8,7 @@ import Toast from "@/components/Toast";
 import { toast } from "react-toastify";
 import PersonalDetails from "@/components/PersonalDetails";
 import ResetPassword from "@/components/ResetPassword";
+import OrderHistory from "@/components/OrderHistory";
 
 const UserDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -56,6 +57,7 @@ const UserDetailsPage: React.FC = () => {
           <p>
             Find all your orders here. You can view the status of your orders
           </p>
+          <OrderHistory userId={userData.id} />
           <hr className="my-6" />
           <ResetPassword />
         </div>
