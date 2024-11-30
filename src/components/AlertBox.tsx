@@ -63,7 +63,7 @@ const AlertBox: React.FC<AlertBoxProps> = ({
               className="w-full relative z-50 bg-white bg-opacity-70 backdrop-blur-sm border border-blue-primary border-opacity-60 rounded-xl pt-5 px-7 pb-5 text-black"
             >
               <div className="items-center justify-between">
-                <div className="items-center font-bold  text-blue space-x-3">
+                <div className="items-center font-bold  text-green space-x-3">
                   {title}
                 </div>
 
@@ -73,7 +73,9 @@ const AlertBox: React.FC<AlertBoxProps> = ({
                     <Button
                       caption="OK"
                       onClick={() => button1OnClick()}
-                      background={buttonColorScheme == 0 ? "bg-blue" : "bg-red"}
+                      background={
+                        buttonColorScheme == 0 ? "bg-green" : "bg-red"
+                      }
                     />
                   )}
                   {buttonStructure == 1 && (
@@ -82,14 +84,14 @@ const AlertBox: React.FC<AlertBoxProps> = ({
                         caption="OK"
                         onClick={() => button1OnClick()}
                         background={
-                          buttonColorScheme == 0 ? "bg-blue" : "bg-red"
+                          buttonColorScheme == 0 ? "bg-green" : "bg-red"
                         }
                       />
                       <Button
                         caption="Cancel"
                         onClick={() => button2OnClick()}
                         background={
-                          buttonColorScheme == 0 ? "bg-red" : "bg-blue"
+                          buttonColorScheme == 0 ? "bg-red" : "bg-green"
                         }
                       />
                     </>
@@ -100,14 +102,14 @@ const AlertBox: React.FC<AlertBoxProps> = ({
                         caption="Yes"
                         onClick={() => button1OnClick()}
                         background={
-                          buttonColorScheme == 0 ? "bg-blue" : "bg-red"
+                          buttonColorScheme == 0 ? "bg-green" : "bg-red"
                         }
                       />
                       <Button
                         caption="No"
                         onClick={() => button2OnClick()}
                         background={
-                          buttonColorScheme == 0 ? "bg-red" : "bg-blue"
+                          buttonColorScheme == 0 ? "bg-red" : "bg-green"
                         }
                       />
                     </>

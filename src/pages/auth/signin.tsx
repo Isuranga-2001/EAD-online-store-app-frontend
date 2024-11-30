@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { loginUser } from "@/services/userService";
 import { useUser } from "@/contexts/userContext";
-import { User, UserType } from "@/interfaces/userInterface";
+import { User, LoginInterface } from "@/interfaces/userInterface";
 import {
   NotFoundException,
   UnauthorizedException,
@@ -22,8 +22,8 @@ const Signin: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const { setUser } = useUser();
-  const [email, setEmail] = useState("sankha.b21@gmail.com");
-  const [password, setPassword] = useState("Sankha123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const router = useRouter();
 
@@ -46,42 +46,17 @@ const Signin: React.FC = () => {
     try {
       const response = await loginUser(email, password);
 
-      // // Save token and email to localStorage
-      // localStorage.setItem("ead-token", response.token);
+      localStorage.setItem("ead-token", response.token);
 
-      // // Save user details in context
-      // const tokenContent = getTokenContent(response.token);
-
-      // let userRole: UserType;
-
-      // if (response.user_role === "ADMIN") {
-      //   userRole = UserType.ADMIN;
-      // } else {
-      //   userRole = UserType.NAH;
-      // }
-
-      // const user: User = {
-      //   id: tokenContent.id,
-      //   name: response.name,
-      //   type: userRole,
-      //   email: email,
-      //   country: response.country,
-      //   phone: response.phone,
-      //   postalCode: response.postalCode,
-      //   created_at: "",
-      //   updated_at: "",
-      //   deleted: false,
-      // };
-      // setUser(user);
+      setUser(response.user);
 
       // Redirect to the dashboard or another page
       toast.success("Sign in successful. Please wait...");
-      console.log("Login successful:", response);
-
-      const redirectRoute = Array.isArray(router.query.redirect)
-        ? router.query.redirect[0]
-        : router.query.redirect || "/";
-      router.push(redirectRoute);
+      if (response.user.type === "ADMIN") {
+        router.push("/admin/products");
+      } else {
+        router.push("/products");
+      }
     } catch (error) {
       console.error(error);
       if (error instanceof UnauthorizedException) {
@@ -141,7 +116,7 @@ const Signin: React.FC = () => {
           <div className="flex flex-col items-center justify-center mt-4">
             <Button caption="SIGN IN" onClick={handleSignIn} />
             <Link href="/auth/forgotpassword">
-              <div className="mb-4 mt-2 text-black text-sm hover:text-light-blue duration-300 transition-all ease-in-out cursor-pointer">
+              <div className="mb-4 mt-2 text-black text-sm hover:text-light-green duration-300 transition-all ease-in-out cursor-pointer">
                 Forgot Password?
               </div>
             </Link>

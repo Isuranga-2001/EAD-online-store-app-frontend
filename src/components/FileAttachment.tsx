@@ -26,7 +26,7 @@ const FileAttachment: React.FC<FileAttachmentProps> = ({
       case "excel":
         return <FaFileExcel className="text-green text-xl" />;
       case "word":
-        return <FaFileWord className="text-light-blue text-xl" />;
+        return <FaFileWord className="text-light-green text-xl" />;
       default:
         return <FaFileAlt className="text-black text-xl" />;
     }

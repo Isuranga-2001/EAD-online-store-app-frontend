@@ -98,7 +98,7 @@ const ForgotPassword: React.FC = () => {
           <div className="flex flex-col items-center justify-center mt-4">
             <Button caption="SEND OTP" onClick={handleForgotPassword} />
             <Link href="/auth/signin">
-              <div className="mb-4 mt-2 text-black text-sm hover:text-light-blue duration-300 transition-all ease-in-out cursor-pointer">
+              <div className="mb-4 mt-2 text-black text-sm hover:text-light-green duration-300 transition-all ease-in-out cursor-pointer">
                 Sign In Instead
               </div>
             </Link>

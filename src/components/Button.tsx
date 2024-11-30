@@ -37,7 +37,7 @@ const Button: FC<ButtonProps> = ({
   caption = "Button",
   onClick = () => {},
   width = "w-auto",
-  background = "bg-blue",
+  background = "bg-green",
   icon: Icon = null,
   textColor = "text-white",
   iconColor = "text-white",

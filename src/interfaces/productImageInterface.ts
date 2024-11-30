@@ -1,9 +1,10 @@
 export interface ProductImage {
-  id: number;
+  ID: number;
   url: string;
   productId: number;
-  createdAt: string;
-  updatedAt: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
 }
 
 export interface CreateProductImage {
@@ -11,7 +12,6 @@ export interface CreateProductImage {
 }
 
 export interface UpdateProductImage {
-  id: number;
   url: string;
   productId: number;
 }

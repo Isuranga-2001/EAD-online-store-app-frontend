@@ -7,15 +7,23 @@ import {
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+interface ProductsResponse {
+  total: number;
+  products: Product[];
+}
+
 export const getAllProducts = async (
-  page: number,
-  pageSize: number
-): Promise<Product[]> => {
+    page: number,
+    pageSize: number
+): Promise<ProductsResponse> => {
   try {
     const response = await axiosInstance.get(`${BASE_URL}/products`, {
       params: { page, page_size: pageSize },
     });
-    return response.data;
+    return {
+      total: response.data.total,
+      products: response.data.data,
+    };
   } catch (error) {
     console.error(error);
     throw error;
@@ -23,12 +31,36 @@ export const getAllProducts = async (
 };
 
 export const createProduct = async (
-  productData: CreateProduct
+    productData: CreateProduct
 ): Promise<Product> => {
   try {
+    const formData = new FormData();
+    formData.append("name", productData.name);
+    formData.append("description", productData.description);
+    formData.append("price", productData.price.toString());
+    formData.append("stock", productData.stock.toString());
+    formData.append("product_type_id", productData.product_type_id.toString());
+
+    // Append images if they exist
+    // if (productData.images && productData.images.length > 0) {
+    //   productData.images.forEach((image, index) => {
+    //     formData.append(`images[${index}]`, image);
+    //   });
+    // }
+    if (productData.images && productData.images.length > 0) {
+      Array.from(productData.images).forEach((file) => {
+        formData.append("images", file);
+      });
+    }
+
     const response = await axiosInstance.post(
-      `${BASE_URL}/products`,
-      productData
+      `${BASE_URL}/products/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -48,13 +80,32 @@ export const getProductById = async (id: number): Promise<Product> => {
 };
 
 export const updateProduct = async (
-  id: number,
-  productData: UpdateProduct
+    id: number,
+    productData: UpdateProduct
 ): Promise<Product> => {
   try {
+    const formData = new FormData();
+    formData.append("name", productData.name);
+    formData.append("description", productData.description);
+    formData.append("price", productData.price.toString());
+    formData.append("stock", productData.stock.toString());
+    formData.append("product_type_id", productData.product_type_id.toString());
+
+    // Append images if they exist
+    if (productData.images && productData.images.length > 0) {
+      Array.from(productData.images).forEach((file) => {
+        formData.append("images", file);
+      });
+    }
+
     const response = await axiosInstance.put(
       `${BASE_URL}/products/${id}`,
-      productData
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -72,26 +123,39 @@ export const deleteProductById = async (id: number): Promise<void> => {
   }
 };
 
-export const searchProducts = async (
-  params: Record<string, any>
-): Promise<Product[]> => {
+export const updateProductStock = async (
+    id: number,
+    stock: number
+): Promise<void> => {
   try {
-    const response = await axiosInstance.get(`${BASE_URL}/products/search`, {
-      params,
-    });
-    return response.data;
+    await axiosInstance.patch(`${BASE_URL}/products/${id}/stock`, { stock });
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
 
-export const updateProductStock = async (
-  id: number,
-  stock: number
-): Promise<void> => {
+interface SearchParams {
+  name?: string;
+  min_price?: number;
+  max_price?: number;
+  in_stock?: boolean;
+  product_type_id?: number;
+  page?: number;
+  page_size?: number;
+}
+
+export const searchProducts = async (
+    params: SearchParams
+): Promise<ProductsResponse> => {
   try {
-    await axiosInstance.patch(`${BASE_URL}/products/${id}/stock`, { stock });
+    const response = await axiosInstance.get(`${BASE_URL}/products/search/`, {
+      params,
+    });
+    return {
+      total: response.data.total,
+      products: response.data.data,
+    };
   } catch (error) {
     console.error(error);
     throw error;

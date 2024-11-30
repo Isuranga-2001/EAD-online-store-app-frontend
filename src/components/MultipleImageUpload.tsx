@@ -89,7 +89,7 @@ const MultipleImageUpload: React.FC<MultipleImageUploadProps> = ({
             className="w-48 h-32 me-6 mb-4 bg-gray-100 border rounded-lg border-blue/70 flex flex-col justify-center items-center cursor-pointer hover:bg-gray-100/20 transition-all ease-in-out duration-300"
             onClick={() => document.getElementById(name)?.click()}
           >
-            <FaPlus className="text-blue text-2xl mb-2" />
+            <FaPlus className="text-green text-2xl mb-2" />
             <span className="text-gray-500">Add Image</span>
             <input
               type="file"

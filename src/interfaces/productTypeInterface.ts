@@ -1,11 +1,12 @@
 import { Product } from "./productInterface";
 
 export interface ProductType {
-  id: number;
+  ID: number;
   name: string;
   products: Product[];
-  createdAt: string;
-  updatedAt: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
 }
 
 export interface CreateProductType {
@@ -13,6 +14,5 @@ export interface CreateProductType {
 }
 
 export interface UpdateProductType {
-  id: number;
   name: string;
 }
