@@ -204,7 +204,7 @@ const AdminEditProductPage: React.FC = () => {
         <Button
           caption="Reset Fields"
           onClick={resetFields}
-          background="bg-light-blue"
+          background="bg-light-green"
         />
         <Button caption="Update Product" onClick={updateProductDetails} />
         <Button
