@@ -107,7 +107,7 @@ const Signup: React.FC = () => {
           className="w-20 h-20 mx-auto rounded-full"
         />
         <h1 className="text-lg font-large text-center text-black opacity-90 font-semibold">
-          Administration Portal
+          Sign Up ITW Digital
         </h1>
         <div className="w-full">
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
